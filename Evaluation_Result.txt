@@ -1,0 +1,88 @@
+RANDOM FOREST PHISHING MODEL - EVALUATION REPORT
+=================================================
+
+Model file:      random_forest_phishing_model.joblib
+Estimator:       RandomForestClassifier(n_estimators=300, random_state=42)
+Dataset:         cleaned_dataset_random_forest.csv
+Dataset shape:   9581 rows x 48 columns (47 features + CLASS_LABEL)
+Class balance:   0 = 4996, 1 = 4585
+Missing values:  0
+Duplicate rows:  0
+
+
+1. HOLDOUT EVALUATION
+---------------------
+
+Split: train_test_split, test_size=0.2, stratify=CLASS_LABEL, random_state=42
+Training rows: 7664
+Testing rows:  1917 (class 0 = 1000, class 1 = 917)
+
+Metrics (test set):
+  Accuracy:   0.9875
+  Precision:  0.9859
+  Recall:     0.9880
+  F1-score:   0.9869
+  ROC-AUC:    0.9993
+
+Confusion matrix (rows = true labels, columns = predicted labels):
+                 Predicted 0    Predicted 1
+  True 0             987            13
+  True 1              11           906
+
+Errors: 24 of 1917 (1.25%) - 13 false positives, 11 false negatives.
+
+Note: These figures match random_forest_evaluation_report.txt exactly.
+A non-stratified split with the same seed gave about 99.9% accuracy, so
+single-split results vary with how the data is divided.
+
+
+2. STRATIFIED 5-FOLD CROSS-VALIDATION
+-------------------------------------
+
+Settings: StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+
+  Metric        Mean     Std     Fold scores
+  -----------   ------   -----   ---------------------------------------------
+  Accuracy      0.9819   0.0021  0.9838, 0.9791, 0.9838, 0.9796, 0.9833
+  Precision     0.9804   0.0032  0.9847, 0.9771, 0.9794, 0.9772, 0.9836
+  Recall        0.9819   0.0026  0.9815, 0.9793, 0.9869, 0.9804, 0.9815
+  F1-score      0.9811   0.0022  0.9831, 0.9782, 0.9832, 0.9788, 0.9825
+  ROC-AUC       0.9984   0.0003  0.9987, 0.9986, 0.9981, 0.9986, 0.9982
+
+The CV mean is about 0.5 percentage points below the single holdout split.
+The CV mean is the more reliable estimate of expected performance.
+
+
+3. LEAKAGE AND DATA CHECKS
+--------------------------
+
+- Test rows whose exact feature vector appears in the training set: 0
+- Rows sharing identical features with another row: 0
+- Feature-identical groups with conflicting labels: 0
+- Top 15 feature importances in the saved model match the values in
+  random_forest_evaluation_report.txt.
+- Training accuracy is 1.0. This is typical for an unpruned Random Forest;
+  the test and CV scores show the model still generalizes well.
+
+
+4. TOP FEATURE IMPORTANCES (saved model)
+----------------------------------------
+
+  PctExtHyperlinks                       0.187359
+  PctExtNullSelfRedirectHyperlinksRT     0.162367
+  PctExtResourceUrls                     0.090263
+  FrequentDomainNameMismatch             0.077659
+  PctNullSelfRedirectHyperlinks          0.064507
+  NumDash                                0.049811
+  NumNumericChars                        0.037555
+  ExtMetaScriptLinkRT                    0.031393
+  InsecureForms                          0.030762
+  SubmitInfoToEmail                      0.026750
+  PathLevel                              0.026593
+  NumDots                                0.021809
+  PathLength                             0.019699
+  UrlLength                              0.017608
+  NumSensitiveWords                      0.017093
+
+
+

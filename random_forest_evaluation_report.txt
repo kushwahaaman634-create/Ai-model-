@@ -1,0 +1,49 @@
+RANDOM FOREST BASELINE EVALUATION
+Dataset rows: 9581
+Features: 47
+Training rows: 7664
+Testing rows: 1917
+Random state: 42
+Estimator: RandomForestClassifier(n_estimators=300, random_state=42)
+
+Metrics:
+Accuracy: 0.987480
+Precision: 0.985854
+Recall: 0.988004
+F1-score: 0.986928
+ROC-AUC: 0.999314
+
+Confusion matrix (rows=true labels, columns=predicted labels):
+[[987  13]
+ [ 11 906]]
+
+Classification report:
+              precision    recall  f1-score   support
+
+           0       0.99      0.99      0.99      1000
+           1       0.99      0.99      0.99       917
+
+    accuracy                           0.99      1917
+   macro avg       0.99      0.99      0.99      1917
+weighted avg       0.99      0.99      0.99      1917
+
+
+Top 15 feature importances:
+PctExtHyperlinks                      0.187359
+PctExtNullSelfRedirectHyperlinksRT    0.162367
+PctExtResourceUrls                    0.090263
+FrequentDomainNameMismatch            0.077659
+PctNullSelfRedirectHyperlinks         0.064507
+NumDash                               0.049811
+NumNumericChars                       0.037555
+ExtMetaScriptLinkRT                   0.031393
+InsecureForms                         0.030762
+SubmitInfoToEmail                     0.026750
+PathLevel                             0.026593
+NumDots                               0.021809
+PathLength                            0.019699
+UrlLength                             0.017608
+NumSensitiveWords                     0.017093
+
+Note: label 0/1 meaning must be confirmed from the dataset documentation.
+This is a holdout baseline; hyperparameter tuning and independent/group-aware validation are not yet performed.

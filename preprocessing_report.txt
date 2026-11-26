@@ -1,0 +1,48 @@
+DATA PREPROCESSING REPORT — RANDOM FOREST
+
+Original dataset shape: 10000 rows x 50 columns
+Missing values: 0
+Fully identical rows before ID removal: 0
+Duplicate records after ignoring ID: 419
+
+Columns removed:
+- id (identifier, not a predictive feature)
+- HttpsInHostname (constant feature(s))
+
+Encoding:
+- Not required. All retained columns are numeric.
+
+Scaling:
+- Not required for Random Forest.
+
+Duplicate handling:
+- Removed repeated rows after dropping id.
+- Cleaned shape: 9581 rows x 48 columns
+- Remaining duplicate rows: 0
+
+Target distribution after cleaning:
+CLASS_LABEL
+0    4996
+1    4585
+
+Feature correlation:
+- Number of predictor pairs with |Pearson r| >= 0.90: 0
+- No feature pairs exceeded this threshold.
+- Correlation is not causation; target correlation is exploratory and not a reason by itself to remove features.
+
+Top 10 absolute correlations with CLASS_LABEL:
+PctExtNullSelfRedirectHyperlinksRT   -0.539062
+FrequentDomainNameMismatch            0.477624
+NumDash                              -0.375612
+SubmitInfoToEmail                    -0.353023
+PctNullSelfRedirectHyperlinks         0.339712
+InsecureForms                         0.312671
+NumDots                               0.296978
+PctExtHyperlinks                      0.265735
+NumSensitiveWords                     0.262154
+IframeOrFrame                        -0.248013
+
+Recommended next step:
+- Stratified train/test split, then fit RandomForestClassifier.
+- Evaluate precision, recall, F1-score, confusion matrix and ROC-AUC.
+- Fit any learned preprocessing only on the training data.
